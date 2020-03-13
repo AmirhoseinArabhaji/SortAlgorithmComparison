@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Chart extends Application {
-    public static void main(String[] args) {
+
+    public static void drawChart(String[] args) {
         launch(args);
     }
 
@@ -30,7 +31,7 @@ public class Chart extends Application {
         final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Sort Algorithm Comparison");
 
-
+        // this function calculate time for sorting and add them to chart
         addingDataToChart(lineChart);
 
         Scene scene = new Scene(lineChart, 800, 600);
@@ -61,10 +62,13 @@ public class Chart extends Application {
         XYChart.Series bucketSort = new XYChart.Series();
         bucketSort.setName("Bucket Sort");
 
+        XYChart.Series shellSort = new XYChart.Series();
+        shellSort.setName("Shell Sort");
 
-        int startRange = 1000;
-        int endRange   = 100000;
-        int step       = 1000;
+
+        int startRange = 100000;
+        int endRange   = 10000000;
+        int step       = 100000;
 
         for (int i = startRange; i <= endRange; i += step) {
 
@@ -84,40 +88,53 @@ public class Chart extends Application {
             System.out.format("Sorting: %d numbers\n", i);
 
             // sort algorithms
+
+            // Merge Sort
             sortArr = mainNums.clone();
             first = System.currentTimeMillis();
             MergeSort.sort(sortArr, i);
             second = System.currentTimeMillis();
             mergeSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
 
+            // Quick Sort
             sortArr = mainNums.clone();
             first = System.currentTimeMillis();
             QuickSort.sort(sortArr, 0, i - 1);
             second = System.currentTimeMillis();
             quickSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
 
+            // Heap Sort
             sortArr = mainNums.clone();
             first = System.currentTimeMillis();
             HeapSort.sort(sortArr);
             second = System.currentTimeMillis();
             heapSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
 
+            // Radix Sort
             sortArr = mainNums.clone();
             first = System.currentTimeMillis();
             RadixSort.sort(sortArr);
             second = System.currentTimeMillis();
             radixSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
 
+            // Bucket Sort
             sortArr = mainNums.clone();
             first = System.currentTimeMillis();
             BucketSort.sort(sortArr);
             second = System.currentTimeMillis();
             bucketSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
 
+            // Shell Sort
+            sortArr = mainNums.clone();
+            first = System.currentTimeMillis();
+            ShellSort.sort(sortArr);
+            second = System.currentTimeMillis();
+            shellSort.getData().add(new XYChart.Data(String.valueOf(i), second - first));
+
         }
 
         // adding series to line chart
-        lineChart.getData().addAll(insertionSort, quickSort, mergeSort, radixSort, bucketSort, heapSort);
+        lineChart.getData().addAll(insertionSort, quickSort, mergeSort, radixSort, bucketSort, heapSort, shellSort);
 
     }
 }
